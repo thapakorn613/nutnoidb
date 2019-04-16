@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2019 at 09:48 AM
+-- Generation Time: Apr 16, 2019 at 09:18 PM
 -- Server version: 10.3.8-MariaDB
 -- PHP Version: 7.2.7
 
@@ -114,10 +114,10 @@ INSERT INTO `timebooking` (`booking_id`, `datetime`, `project_id`) VALUES
 (8, '2019-03-23 13:00:00', 2),
 (9, '2019-03-24 10:30:00', 3),
 (10, '2019-03-24 10:00:00', 3),
-(11, '2019-03-24 09:30:00', 4),
+(11, '2019-03-24 09:30:00', 3),
 (12, '2019-03-24 11:00:00', 4),
-(13, '2019-03-25 11:30:00', 5),
-(14, '2019-03-25 11:00:03', 5);
+(13, '2019-03-25 11:30:00', 1),
+(14, '2019-03-25 11:00:03', 3);
 
 -- --------------------------------------------------------
 
@@ -129,11 +129,11 @@ CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `booking_id` int(10) DEFAULT NULL,
+  `haveWaitTable` tinyint(4) DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `project_id` int(10) DEFAULT NULL,
   `type` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `isAdmin` tinyint(1) DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -143,11 +143,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `booking_id`, `email`, `password`, `project_id`, `type`, `isAdmin`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'ภูมิ', 10, 'chawalidpunyajarern@gmail.com', '$2y$10$axiLsVMoK/FiW.TGXmU9M.kaeTLTtaonAaD6y.DxpY92yqZBWl.wy', 2, NULL, NULL, NULL, '2019-03-19 10:40:45', '2019-03-19 10:40:45'),
-(2, 'art', NULL, 'art@gmail.com', '$2y$10$/v.UBoB4qeWd7ho8QNSCX.zwfJHgT4dlzE52UZrSUGCV9id2Or6PK', NULL, 'admin', NULL, 'TwwrGSLdLY4aIlH5JOqqXF9KYKdizqvhhgBg9QigEmmxmNe4F3UI8LIXaCLo', '2019-03-21 02:56:25', '2019-03-27 02:44:42'),
-(3, 'thapakorn', NULL, 'thapakorn@gmail.com', '$2y$10$6HWcUrQp9aFq3yfAwFhgWuU/PXIo8rgQ94M1WBPzSzQDXWidlMly2', 1, NULL, NULL, 'IFdsXO6bq0blj5LkwnPblfzRBbv5MLZfH89es9wEpGe3krLmigol4lPf5HR4', '2019-03-21 11:11:15', '2019-03-27 02:44:17'),
-(4, 'green', NULL, 'green@gmail.com', '$2y$10$UuAuOlmNKjgxzTD6MG1SlOEEivNe6OYq1FvndMW8Sn6FOjEFRpCyG', 3, NULL, NULL, 'WhrGTDMjCeYoadHQIS0WjSq6lhYpEF5sSQBTj0n5eysFMSNmvXR8ChDRvN7G', '2019-03-27 01:54:53', '2019-03-27 01:54:53');
+INSERT INTO `users` (`id`, `name`, `booking_id`, `haveWaitTable`, `email`, `password`, `project_id`, `type`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'ภูมิ', 4, 1, 'chawalidpunyajarern@gmail.com', '$2y$10$axiLsVMoK/FiW.TGXmU9M.kaeTLTtaonAaD6y.DxpY92yqZBWl.wy', 2, NULL, NULL, '2019-03-19 10:40:45', '2019-03-19 10:40:45'),
+(2, 'art', NULL, 1, 'art@gmail.com', '$2y$10$/v.UBoB4qeWd7ho8QNSCX.zwfJHgT4dlzE52UZrSUGCV9id2Or6PK', NULL, 'admin', 'LOzfsrpI1kkthEvnxXZ0Ght4QGtOlneLMIVtlaEOB4RbuPHAZro8gbe2vGjb', '2019-03-21 02:56:25', '2019-03-27 02:44:42'),
+(3, 'thapakorn', NULL, 1, 'thapakorn@gmail.com', '$2y$10$6HWcUrQp9aFq3yfAwFhgWuU/PXIo8rgQ94M1WBPzSzQDXWidlMly2', 1, NULL, 'lyEPjd2FWDdXoDOflfGswrnubCr0dcGqgZEpsgt443nSfUSwwB6RzFlKDrrz', '2019-03-21 11:11:15', '2019-03-27 02:44:17'),
+(4, 'green', 9, 1, 'green@gmail.com', '$2y$10$UuAuOlmNKjgxzTD6MG1SlOEEivNe6OYq1FvndMW8Sn6FOjEFRpCyG', 3, NULL, 'i15mVwoyGmRo1fDCWDbetLrjpvME0xlkdjpVaUzrZldeWundhw4ggzAKLb9d', '2019-03-27 01:54:53', '2019-03-27 01:54:53');
 
 -- --------------------------------------------------------
 
@@ -158,6 +158,7 @@ INSERT INTO `users` (`id`, `name`, `booking_id`, `email`, `password`, `project_i
 CREATE TABLE `waitconfirm` (
   `wait_id` int(10) NOT NULL,
   `status_confirm` tinyint(2) DEFAULT NULL,
+  `status_submit` tinyint(4) DEFAULT NULL,
   `project_id` int(10) NOT NULL,
   `booking_id1` int(10) DEFAULT NULL,
   `booking_id2` int(10) DEFAULT NULL,
@@ -168,10 +169,10 @@ CREATE TABLE `waitconfirm` (
 -- Dumping data for table `waitconfirm`
 --
 
-INSERT INTO `waitconfirm` (`wait_id`, `status_confirm`, `project_id`, `booking_id1`, `booking_id2`, `booking_id3`) VALUES
-(1, NULL, 3, 9, 10, NULL),
-(4, NULL, 1, 3, NULL, NULL),
-(5, 1, 2, 2, 4, 10);
+INSERT INTO `waitconfirm` (`wait_id`, `status_confirm`, `status_submit`, `project_id`, `booking_id1`, `booking_id2`, `booking_id3`) VALUES
+(4, NULL, 1, 1, 3, 4, 13),
+(5, 1, 1, 2, 2, 4, 10),
+(11, 1, 1, 3, 9, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -261,7 +262,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `waitconfirm`
 --
 ALTER TABLE `waitconfirm`
-  MODIFY `wait_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `wait_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
